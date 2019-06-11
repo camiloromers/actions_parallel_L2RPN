@@ -123,6 +123,7 @@ class parallel_actions:
 
     def run_sim(self, key_name, action):
         dtimes, sces, rews, observs = self.sim_single_action(action)
+        self.rel_dic['action_index'] = key_name[0]
         self.rel_dic['action_name'] = key_name[1]
         self.rel_dic['action_vec'] = action.as_array().tolist()
         self.rel_dic['datetimes'] = dtimes
