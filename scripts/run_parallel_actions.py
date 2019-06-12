@@ -126,10 +126,11 @@ class parallel_actions:
         self.rel_dic['action_index'] = key_name[0]
         self.rel_dic['action_name'] = key_name[1]
         self.rel_dic['action_vec'] = action.as_array().tolist()
-        self.rel_dic['datetimes'] = dtimes
-        self.rel_dic['scenario'] = sces
-        self.rel_dic['rewards'] = rews
-        self.rel_dic['obs'] = observs
+        self.rel_dic['results'] = {}
+        self.rel_dic['results']['datetimes'] = dtimes
+        self.rel_dic['results']['scenario'] = sces
+        self.rel_dic['results']['rewards'] = rews
+        # self.rel_dic['results']['obs'] = observs
         f_name = 'action_id_' + str(key_name[0]) +'.json'
         full_path = os.path.join(self.destination_path, f_name)
         if self.save_files:
