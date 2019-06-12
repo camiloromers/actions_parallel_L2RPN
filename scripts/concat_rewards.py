@@ -24,4 +24,4 @@ for json_f in glob(path):
         df.insert(1, 'scenario', config_data['results']['scenario'])
     break
 
-df.to_csv(os.path.join(files_path,'concat_rewards.csv'))
+df.to_csv(os.path.join(files_path,'concat_rewards.csv'), index=False)
