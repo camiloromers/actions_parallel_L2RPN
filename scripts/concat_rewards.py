@@ -16,5 +16,5 @@ for json_f in glob(path):
         config_df.columns = ['rewards_'+str(config_data['action_index'])]
         df = pd.concat([df ,config_df], axis=1)
 
-df.to_csv('concat_rewards.csv')
+df.to_csv(os.path.join(files_path,'concat_rewards.csv'))
 
