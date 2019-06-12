@@ -21,6 +21,7 @@ class parallel_actions:
         self.game_level = 'validation_backendonly'
         self.tot_iter = 5174
         self.save_files = True
+        self.truncate_rw = 3
         self.rel_dic = {}
 
     def set_environement(self):
@@ -117,7 +118,8 @@ class parallel_actions:
                 break
 
             # Save results in list
-            rewards.append(simulated_reward); observations.append(list(obs))
+            rewards.append(round(simulated_reward, self.truncate_rw))
+            observations.append(list(obs))
             datetimes.append(tmp_str); sce.append(scenario)
         return datetimes, sce, rewards, observations
 
