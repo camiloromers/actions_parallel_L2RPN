@@ -96,7 +96,7 @@ class parallel_actions:
             i += 1
         return action_comb_dic, actions_table
 
-    def sim_single_action(self, action):
+    def sim_single_action(self, action, action_idx):
         # This method return some observation variables
         # given only one action
 
@@ -107,13 +107,14 @@ class parallel_actions:
         action_do_nothing = env.action_space.get_do_nothing_action()
         rewards, observations, datetimes, sce = [], [], [], []
         for _ in range(self.tot_iter):
-            obs, simulated_reward, *_ = env.step(action_do_nothing)
+            obs, simulated_reward, done, reward_flag = env.step(action_do_nothing)
             tmp = env.get_current_datetime()
             tmp_str = tmp.strftime("%m/%d/%Y, %H:%M:%S")
             scenario = int(env.game.get_current_chronic_name())
             if obs is None:
-                # print ('--> Obs None type <--')
-                print ('--> Action will not be saved')
+                print ('\n++ ++ Action id {} will not be saved ++ ++'.format(action_idx))
+                print (vars(reward_flag)['text'])
+                print ()
                 self.save_files = False
                 break
 
@@ -124,7 +125,7 @@ class parallel_actions:
         return datetimes, sce, rewards, observations
 
     def run_sim(self, key_name, action):
-        dtimes, sces, rews, observs = self.sim_single_action(action)
+        dtimes, sces, rews, observs = self.sim_single_action(action, key_name[0])
         self.rel_dic['action_index'] = key_name[0]
         self.rel_dic['action_name'] = key_name[1]
         self.rel_dic['action_vec'] = action.as_array().tolist()
@@ -138,10 +139,10 @@ class parallel_actions:
         if self.save_files:
             with open(full_path, 'w') as f:
                 json.dump(self.rel_dic, f)
+            print ('--> Action id-> {} completed successfully'.format(key_name[0]))
 
         # Reset save file boolean
         self.save_files = True
-        print ('++ Fin validation with action -> {}'.format(key_name[0]))
 
     def select_actions(self, start=0, end=2):
         # Select subset of actions given a range
