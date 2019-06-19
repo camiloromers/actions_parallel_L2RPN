@@ -66,7 +66,7 @@ class parallel_actions:
         all_combinations = self.combinations()
 
         action_comb_dic = {}
-        actions_table = {}
+        state_table = {}
         i = 0
         for combination in all_combinations:
             indv_actions = []
@@ -80,21 +80,21 @@ class parallel_actions:
                 if type == 'se':
                     action.set_substation_switches(substation_id=id,
                                                    new_values=self.target_configurations['se_' + str(id)][config_idx])
-                    indv_actions.append(self.target_configurations['se_' + str(id)][config_idx])
+                    indv_actions.append(np.array(self.target_configurations['se_' + str(id)][config_idx]))
 
                 elif type == 'tl':
                     env.action_space.set_lines_status_switch_from_id(action=action,
                                                                      line_id=id,
                                                                      new_switch_value=self.target_configurations['tl_' + str(id)][config_idx][0])
-                    indv_actions.append(self.target_configurations['tl_' + str(id)][config_idx][0])
+                    indv_actions.append(np.array(self.target_configurations['tl_' + str(id)][config_idx][0]))
 
             # Encode key name
             key_name = '_'.join(map(str,combination))
             # Create final nested dict {('0','encoded_keyname'): action_vector}}
             action_comb_dic[(i,key_name)] = copy.deepcopy(action)
-            actions_table[i] = indv_actions
+            state_table[i] = indv_actions
             i += 1
-        return action_comb_dic, actions_table
+        return action_comb_dic, state_table
 
     def sim_single_action(self, action, action_idx):
         # This method return some observation variables
@@ -146,15 +146,15 @@ class parallel_actions:
 
     def select_actions(self, start=0, end=2):
         # Select subset of actions given a range
-        actions, actions_table = self.construct_final_action_dic()
+        actions, state_table = self.construct_final_action_dic()
         sample_actions = {k: v for j in range(start, end) for k, v in actions.items() if k[0]==j}
 
         # Save actions table as csv using pandas
-        path = os.path.join(self.destination_path, 'actions_table.csv')
-        self.actions_df = pd.DataFrame(actions_table.values(),
-                                       index=actions_table.keys(),
+        path = os.path.join(self.destination_path, 'states_table.csv')
+        self.states_df = pd.DataFrame(state_table.values(),
+                                       index=state_table.keys(),
                                        columns=self.target_configurations.keys())
-        self.actions_df.to_csv(path)
+        self.states_df.to_csv(path)
         return sample_actions
 
     def run_parallel_sim(self, target_configurations,
