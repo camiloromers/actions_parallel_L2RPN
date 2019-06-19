@@ -194,9 +194,6 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--end', metavar='END_INDEX', type=int, default=8639,
                         help='Max index to end computation')
 
-    parser.add_argument('-a', '--actions_csv', metavar='ACTIONS_CSV', type=bool, default=False,
-                        help='To save combination action csv')
-
     args = parser.parse_args()
 
     # Configurable by the user
