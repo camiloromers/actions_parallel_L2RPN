@@ -24,7 +24,7 @@ ScenarioStudied=3
 
 # # Load the Score Table for all configurations
 
-path_data = os.path.join('results_MassiveSearch1/')
+path_data = os.path.join('../results_MassiveSearch1/')
 dataset_csv = os.path.join(path_data, "concat_rewards.csv")
 rewards = pd.read_csv(dataset_csv, sep=",",)
 
@@ -104,7 +104,7 @@ iDXBest
 
 # # Load Table of Configuration description
 
-path_data = os.path.join('results_MassiveSearch1/')
+path_data = os.path.join('../results_MassiveSearch1/')
 actions_csv = os.path.join(path_data, "actions_table.csv")
 actions = pd.read_csv(actions_csv, sep=",",)
 actions=actions.drop(columns=['Unnamed: 0'])
@@ -163,7 +163,7 @@ vectorReachableTopologies
 
 # # Look at max rewards
 
-rewards_scenario=rewards.loc[np.where(rewards['scenario']==ScenarioStudied)][2:ncolumns]
+rewards_scenario=rewards.loc[np.where(rewards['scenario']==ScenarioStudied)]
 
 rewards_scenario
 
